@@ -15,9 +15,12 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.josamar.marvelcharacters.model.CharacterResponse;
+import com.josamar.marvelcharacters.model.InfoCharacter;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import cafsoft.foundation.Data;
 import cafsoft.foundation.HTTPURLResponse;
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initViews();
         initEvents();
+        getCharacters("Hulk");
     }
     private void initViews(){
         character=findViewById(R.id.imgCharacter);
@@ -62,7 +66,8 @@ public class MainActivity extends AppCompatActivity {
     public void characterInfo(){
         String characterName = inputName.getText().toString();
         if(characterName.length()>0){
-            getCharacter(characterName);
+            //getCharacter(characterName);
+            getCharacters(characterName);
         }else{
             Toast.makeText(this, "fields_empty", Toast.LENGTH_SHORT).show();
         }
@@ -88,6 +93,67 @@ public class MainActivity extends AppCompatActivity {
             }
         }).resume();
     }
+    //---------------------------------------------------------------------------------------
+    public void getCharacters(String characterName){
+        String strUrl = host + service2 +characterName;
+        String query = strUrl +'&'+ts+'&'+key+'&'+hash;
+        Log.d("Response", query);
+        URL url = null;
+        try {
+            url = new URL(query);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        URLRequest request = new URLRequest(url);
+        URLSession.getShared().dataTask(request, (data, response, error) -> {
+            HTTPURLResponse resp = (HTTPURLResponse) response;
+            if (resp.getStatusCode() == 200) {
+                String text = data.toText();
+                Gson json = new Gson();
+                InfoCharacter chInfo = json.fromJson(text,InfoCharacter.class);
+                processImages(chInfo);
+            }
+        }).resume();
+    }
+    public void processImages(InfoCharacter chInfo) {
+        List<String> strURLs = new ArrayList<>();
+        Log.d("Response1", "Holaaaaa1");
+        for (int i = 0; i < chInfo.getCantResults(); i++) {
+            strURLs.add(chInfo.getImage(i));
+        }
+        List<URL> urls = new ArrayList<>();
+        Log.d("Response2", "Holaaaaa2");
+        try {
+            for (int i = 0; i < strURLs.size(); i++) {
+                urls.add(new URL(strURLs.get(i)));
+            }
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < urls.size(); i++) {
+            Log.d("ResponseFor"+String.valueOf(i), "Holaaaaa"+String.valueOf(i));
+            URLRequest request = new URLRequest(urls.get(i));
+            Log.d("reObj", String.valueOf(request));
+            URLSession.getShared().dataTask(request, (data, response, error) -> {
+                HTTPURLResponse resp = (HTTPURLResponse) response;
+                if (resp.getStatusCode() == 200) {
+                    final Bitmap image = dataToImage(data);
+                    showImages(image);
+                }
+            }).resume();
+    }
+    }
+    public void showImages(Bitmap images){
+
+        runOnUiThread(() -> {
+            //character.setImageBitmap(image);
+            //String m =
+            Log.d("RRRRRRRRRRRRRRR", "showImages: ");
+            //Toast.makeText(this, m, Toast.LENGTH_SHORT).show();
+        });
+    }
+    //------------------------------------------------------------------------
     public void processImage(CharacterResponse chInfo) {
         String strURL = chInfo.getImage();
         URL url = null;
@@ -97,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         URLRequest request = new URLRequest(url);
-        Log.d("reObj", String.valueOf(request));
         URLSession.getShared().dataTask(request, (data, response, error) -> {
             HTTPURLResponse resp = (HTTPURLResponse) response;
             if (resp.getStatusCode() == 200) {
