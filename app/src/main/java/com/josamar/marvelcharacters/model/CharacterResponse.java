@@ -1,25 +1,18 @@
 package com.josamar.marvelcharacters.model;
 
-import android.util.Log;
-
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class CharacterResponse {
     private Data data;
 
     private class Data{
-        //private List<String> results = new ArrayList<>();
         private List<Info> results;
 
         public class Info {
             private String name;
             private String description;
             private Thumbnail thumbnail;
+
             private class Thumbnail{
                 private String path;
                 private String extension;
