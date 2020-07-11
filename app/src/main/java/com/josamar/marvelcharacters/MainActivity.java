@@ -165,8 +165,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        List<Bitmap> images =new ArrayList<>();
-        List<String> names =new ArrayList<>();
         List<Information> infos = new ArrayList<>();
         for (this.i=0; this.i < urls.size(); this.i++) {
             final String nombre= chInfo.getName(this.i);
@@ -184,14 +182,14 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("ResponseImages", "Hola desde images");
                     if(this.i == urls.size()){
                         Log.d("ResponseIfListImages", "Hola desde el if ejej saludos");
-                        showImages(images,names,infos);
+                        showImages(infos);
                     }
                 }
             }).resume();
         }
     }
 
-    public void showImages(List<Bitmap> images,List<String> names,List<Information> infoChar){
+    public void showImages(List<Information> infoChar){
         Adaptador miAdaptador = new Adaptador(this,R.layout.items,infoChar);
         runOnUiThread(() -> {
             //character.setImageBitmap(image);
