@@ -13,13 +13,6 @@
         android:background="@drawable/marvel_ground"
         android:orientation="vertical"></LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-    </LinearLayout>
-
     <ScrollView
         android:id="@+id/scPrincipal"
         android:layout_width="match_parent"
@@ -28,7 +21,7 @@
         <LinearLayout
             android:id="@+id/lyPrincipal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <LinearLayout
@@ -42,7 +35,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TextView" />
+                    android:text="@string/inputName"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/txEdName"
@@ -51,14 +47,23 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:text="Name" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp" />
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btnGet"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Button" />
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnGet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/getCharacter" />
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/imgCharacter"
@@ -66,9 +71,11 @@
                 android:layout_height="wrap_content" />
 
             <ListView
-                android:id="@+id/lsCharacters"
+                android:id="@+id/lsView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
         </LinearLayout>
     </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,31 +6,7 @@ public class InfoCharacter {
     private Data data;
 
     private class Data{
-        private List<Info> results;
-
-        public class Info {
-            private String name;
-            private String description;
-            private Thumbnail thumbnail;
-
-            private class Thumbnail{
-                private String path;
-                private String extension;
-                public String getImage(){
-                    return path+"."+extension;
-                }
-            }
-
-            public String getName() {
-                return name;
-            }
-            public String getDescription(){
-                return description;
-            }
-            public String getImage(){
-                return thumbnail.getImage();
-            }
-        }
+        private List<Character> results;
 
         public String getName(int i) {
             return results.get(i).getName();
@@ -44,6 +20,10 @@ public class InfoCharacter {
 
         public int getCantResults() {
             return results.size();
+        }
+
+        public List<Character> getResults() {
+            return results;
         }
     }
 
@@ -59,6 +39,9 @@ public class InfoCharacter {
 
     public int getCantResults() {
         return data.getCantResults();
+    }
+    public List<Character> getLista() {
+        return data.getResults();
     }
 }
 

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Marvel Characters</string>
+    <string name="inputName">Character Name:</string>
+    <string name="getCharacter">Get Character</string>
 </resources>
