@@ -6,13 +6,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnGet = null;
     private int i;
     private ListView characters = null;
+    private ImageView logo = null;
 
     //---------------------------------------------------------
     @Override
@@ -58,11 +56,11 @@ public class MainActivity extends AppCompatActivity {
         initEvents();
     }
     private void initViews(){
-        character=findViewById(R.id.imgCharacter);
         txName = findViewById(R.id.txName);
         inputName = findViewById(R.id.txEdName);
         btnGet = findViewById(R.id.btnGet);
         characters= findViewById(R.id.lsView);
+        logo = findViewById(R.id.imagLogo);
     }
     private void initEvents(){
         btnGet.setOnClickListener(new View.OnClickListener(){
@@ -77,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
             //getCharacter(characterName);
             getCharacters(characterName);
         }else{
-            Toast.makeText(this, "fields_empty", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.fields_empty,Toast.LENGTH_SHORT).show();
         }
     }
     public void getCharacter(String characterName){
@@ -151,12 +149,10 @@ public class MainActivity extends AppCompatActivity {
     }
     public void processImages(InfoCharacter chInfo) {
         List<String> strURLs = new ArrayList<>();
-        Log.d("Response1", "Holaaaaa1");
         for (int i = 0; i < chInfo.getCantResults(); i++) {
             strURLs.add(chInfo.getImage(i));
         }
         List<URL> urls = new ArrayList<>();
-        Log.d("Response2", "Holaaaaa2");
         try {
             for (int i = 0; i < strURLs.size(); i++) {
                 urls.add(new URL(strURLs.get(i)));
@@ -165,45 +161,30 @@ public class MainActivity extends AppCompatActivity {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        List<Information> infos = new ArrayList<>();
-        for (this.i=0; this.i < urls.size(); this.i++) {
-            final String nombre= chInfo.getName(this.i);
-            Log.d("ResponseFor"+String.valueOf(i), "Holaaaaa"+String.valueOf(i));
-            URLRequest request = new URLRequest(urls.get(i));
-            Log.d("reObj", String.valueOf(request));
-            URLSession.getShared().dataTask(request, (data, response, error) -> {
-                HTTPURLResponse resp = (HTTPURLResponse) response;
-                if (resp.getStatusCode() == 200) {
-                    final Bitmap image = dataToImage(data);
-                    //images.add(image);
-                    //names.add(chInfo.getName(this.i));
-                    final Information info= new Information(nombre,image);
-                    infos.add(info);
-                    Log.d("ResponseImages", "Hola desde images");
-                    if(this.i == urls.size()){
-                        Log.d("ResponseIfListImages", "Hola desde el if ejej saludos");
-                        showImages(infos);
+        Runnable r = () -> {
+            List<Information> infos = new ArrayList<>();
+            for (i=0; i < urls.size(); i++) {
+                final String nombre= chInfo.getName(i);
+                URLRequest request = new URLRequest(urls.get(i));
+                URLSession.getShared().dataTask(request, (data, response, error) -> {
+                    HTTPURLResponse resp = (HTTPURLResponse) response;
+                    if (resp.getStatusCode() == 200) {
+                        final Bitmap image = dataToImage(data);
+                        final Information info= new Information(nombre,image);
+                        infos.add(info);
                     }
-                }
-            }).resume();
-        }
+                }).resume();
+            }
+            showImages(infos);
+        };
+        r.run();
     }
 
     public void showImages(List<Information> infoChar){
         Adaptador miAdaptador = new Adaptador(this,R.layout.items,infoChar);
         runOnUiThread(() -> {
-            //character.setImageBitmap(image);
-            //String m =
-            Log.d("RRRRRRRRRRRRRRR", "showImages: ");
-            //Toast.makeText(this, m, Toast.LENGTH_SHORT).show();
-            //View charac = LayoutInflater.from(this).inflate(R.layout.activity_main,null);
-            //ImageView chMarvel = (ImageView) charac.findViewById(R.layout.)
-            //characters.addFooterView();
-            //ArrayAdapter<String> adapter = new ArrayAdapter<>(this,R.layout.items,names);
             characters.setAdapter(miAdaptador);
-            //Toast.makeText(this, infoChar.get(0).getName(), Toast.LENGTH_SHORT).show();
-            Log.d("RRRRRRRRRRRRRRR", "showImages: " + infoChar.size());
-            //character.setImageBitmap(infoChar.get(0).getImage());
         });
+
     }
 }

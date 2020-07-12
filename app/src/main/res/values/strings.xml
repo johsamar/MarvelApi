@@ -2,4 +2,5 @@
     <string name="app_name">Marvel Characters</string>
     <string name="inputName">Character Name:</string>
     <string name="getCharacter">Get Character</string>
+    <string name="fields_empty">Field empty</string>
 </resources>
