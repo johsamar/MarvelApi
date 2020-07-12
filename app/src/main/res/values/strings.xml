@@ -3,4 +3,6 @@
     <string name="inputName">Character Name:</string>
     <string name="getCharacter">Get Character</string>
     <string name="fields_empty">Field empty</string>
+    <string name="character_not_found">Check that the name is spelled correctly (some use - like \"spider-man\")</string>
+    <string name="short_name">The name is too short</string>
 </resources>

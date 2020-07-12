@@ -71,11 +71,15 @@ public class MainActivity extends AppCompatActivity {
     }
     public void characterInfo(){
         String characterName = inputName.getText().toString();
-        if(characterName.length()>0){
+        if(characterName.length()>3){
             //getCharacter(characterName);
             getCharacters(characterName);
         }else{
-            Toast.makeText(this, R.string.fields_empty,Toast.LENGTH_SHORT).show();
+            if(characterName.length()==0){
+                Toast.makeText(this, R.string.fields_empty,Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, R.string.short_name,Toast.LENGTH_SHORT).show();
+            }
         }
     }
     public void getCharacter(String characterName){
@@ -143,7 +147,11 @@ public class MainActivity extends AppCompatActivity {
                 String text = data.toText();
                 Gson json = new Gson();
                 InfoCharacter chInfo = json.fromJson(text,InfoCharacter.class);
-                processImages(chInfo);
+                if(chInfo.getCantResults()==0){
+                    showMessage(R.string.character_not_found);
+                }else {
+                    processImages(chInfo);
+                }
             }
         }).resume();
     }
@@ -184,6 +192,12 @@ public class MainActivity extends AppCompatActivity {
         Adaptador miAdaptador = new Adaptador(this,R.layout.items,infoChar);
         runOnUiThread(() -> {
             characters.setAdapter(miAdaptador);
+        });
+
+    }
+    public void showMessage(int mensaje){
+        runOnUiThread(()->{
+            Toast.makeText(this, mensaje,Toast.LENGTH_SHORT).show();
         });
 
     }

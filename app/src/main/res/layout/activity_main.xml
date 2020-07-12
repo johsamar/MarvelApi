@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EB000000"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -13,10 +14,10 @@
         android:background="@drawable/marvel_ground"
         android:orientation="vertical"></LinearLayout>
 
-    <ScrollView
-        android:id="@+id/scPrincipal"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/lyPrincipal"
@@ -34,7 +35,8 @@
             <LinearLayout
                 android:id="@+id/lyInputs"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#74000000"
                 android:orientation="horizontal">
 
                 <TextView
@@ -60,7 +62,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -78,6 +80,6 @@
                 android:layout_height="match_parent" />
 
         </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
